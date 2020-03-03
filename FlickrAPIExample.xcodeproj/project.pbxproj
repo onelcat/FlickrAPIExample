@@ -26,8 +26,11 @@
 		2E5F6386240E6DE200DA1F2C /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E5F637F240E6DE200DA1F2C /* Alamofire.framework */; };
 		2E5F6387240E6DE200DA1F2C /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2E5F637F240E6DE200DA1F2C /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2E5F638B240E79A500DA1F2C /* Date_Extesion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F638A240E79A500DA1F2C /* Date_Extesion.swift */; };
+		2E60B5E6240E9DD100A86757 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E60B5E4240E9DD100A86757 /* ImageCollectionViewCell.swift */; };
+		2E60B5E7240E9DD100A86757 /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E60B5E5240E9DD100A86757 /* ImageCollectionViewCell.xib */; };
 		2E6D44A2240E7D72006FCD03 /* IGListDiffKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E6D44A1240E7D72006FCD03 /* IGListDiffKit.framework */; };
 		2E6D44A3240E7D72006FCD03 /* IGListDiffKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2E6D44A1240E7D72006FCD03 /* IGListDiffKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2EF7CF20240E8A9A00B13BD4 /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EF7CF1F240E8A9A00B13BD4 /* DataSourceModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,7 +91,10 @@
 		2E5F637E240E6DE200DA1F2C /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		2E5F637F240E6DE200DA1F2C /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		2E5F638A240E79A500DA1F2C /* Date_Extesion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date_Extesion.swift; sourceTree = "<group>"; };
+		2E60B5E4240E9DD100A86757 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		2E60B5E5240E9DD100A86757 /* ImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionViewCell.xib; sourceTree = "<group>"; };
 		2E6D44A1240E7D72006FCD03 /* IGListDiffKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IGListDiffKit.framework; path = Carthage/Build/iOS/IGListDiffKit.framework; sourceTree = "<group>"; };
+		2EF7CF1F240E8A9A00B13BD4 /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,11 +155,14 @@
 				2E5F6344240E58CD00DA1F2C /* AppDelegate.swift */,
 				2E5F6348240E58CD00DA1F2C /* MainViewController.swift */,
 				2E5F6375240E663F00DA1F2C /* InfoViewController.swift */,
+				2E60B5E4240E9DD100A86757 /* ImageCollectionViewCell.swift */,
+				2E60B5E5240E9DD100A86757 /* ImageCollectionViewCell.xib */,
 				2E5F634A240E58CD00DA1F2C /* Main.storyboard */,
 				2E5F634D240E58D000DA1F2C /* Assets.xcassets */,
 				2E5F634F240E58D000DA1F2C /* LaunchScreen.storyboard */,
 				2E5F6352240E58D000DA1F2C /* Info.plist */,
 				2E5F6377240E6BEE00DA1F2C /* API.swift */,
+				2EF7CF1F240E8A9A00B13BD4 /* DataSourceModel.swift */,
 				2E5F638A240E79A500DA1F2C /* Date_Extesion.swift */,
 				2E5F6379240E6D1400DA1F2C /* HSLog.swift */,
 			);
@@ -297,6 +306,7 @@
 			files = (
 				2E5F6351240E58D000DA1F2C /* LaunchScreen.storyboard in Resources */,
 				2E5F634E240E58D000DA1F2C /* Assets.xcassets in Resources */,
+				2E60B5E7240E9DD100A86757 /* ImageCollectionViewCell.xib in Resources */,
 				2E5F634C240E58CD00DA1F2C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,7 +332,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EF7CF20240E8A9A00B13BD4 /* DataSourceModel.swift in Sources */,
 				2E5F638B240E79A500DA1F2C /* Date_Extesion.swift in Sources */,
+				2E60B5E6240E9DD100A86757 /* ImageCollectionViewCell.swift in Sources */,
 				2E5F6349240E58CD00DA1F2C /* MainViewController.swift in Sources */,
 				2E5F6376240E663F00DA1F2C /* InfoViewController.swift in Sources */,
 				2E5F637A240E6D1400DA1F2C /* HSLog.swift in Sources */,
