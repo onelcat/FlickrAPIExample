@@ -34,9 +34,9 @@ struct API {
             
             switch resultData.result {
             case let .success(value):
-                debuglog("请求的字符串数据",value)
+//                debuglog("请求的字符串数据",value)
                 if let result = Mapper<ResultModel>().map(JSONString: value),result.code == 0 {
-                    debuglog("一个页面有多少",result.photos?.photo[0])
+//                    debuglog("一个页面有多少",result.photos?.photo[0])
                     completionHandler(.success(result.photos?.photo ?? []))
                 } else {
                     let error = NSError(domain: "io.onelcat.github mapper is null", code: 100036, userInfo: nil)

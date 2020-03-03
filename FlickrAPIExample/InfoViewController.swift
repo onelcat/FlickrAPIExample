@@ -27,7 +27,7 @@ final class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       guard let value = self.dataSource else {
+        guard let value = self.dataSource else {
             fatalError("数据错误")
         }
             

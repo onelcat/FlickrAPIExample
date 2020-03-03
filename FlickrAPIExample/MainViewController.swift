@@ -32,7 +32,7 @@ final class MainViewController: UIViewController {
             case let .failure(error):
                 fatalError(error.localizedDescription)
             case let .success(value):
-                debuglog("加载数据",value.count)
+//                debuglog("加载数据",value.count)
                 self?.dataSource = value
                 self?.adapter.performUpdates(animated: false, completion: nil)
             }
@@ -73,14 +73,6 @@ extension MainViewController: ImageViewSectionControllerDelegate {
         }
         vc.dataSource = data
         self.navigationController?.pushViewController(vc, animated: true)
-        
-        if #available(iOS 13.0, *) {
-
-        } else {
-            // Fallback on earlier versions
-             
-        }
-
     }
     
     
@@ -108,7 +100,10 @@ final class ImageViewSectionController: ListSectionController {
                                                                     fatalError()
         }
         
-        cell.imageView.kf.setImage(with: object!.imageURL)
+//        cell.imageView.kf.setImage(with: object!.imageURL)
+        cell.imageView.kf.setImage(with: object!.imageURL, placeholder: nil, options: nil, progressBlock: nil) { (reuslt) in
+            cell.imageView.contentMode = .scaleAspectFit
+        }
         return cell
     }
 
