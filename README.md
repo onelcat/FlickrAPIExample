@@ -14,6 +14,19 @@ KEY: 475486054f5b1afa16fefe55415fa546
 ## flickr.interestingness.getList
 
 ### 请求
+
+> 参数说明
+- api_key （必需的）
+您的API应用程序密钥。有关更多详细信息，请参见此处。
+- date （可选的）
+特定日期，格式为YYYY-MM-DD，用于返回感兴趣的照片。
+- extras （可选的）
+以逗号分隔的额外信息列表，可用于获取每个返回的记录。目前支持的领域有：description，license，date_upload，date_taken，owner_name，icon_server，original_format，last_update，geo，tags，machine_tags，o_dims，views，media，path_alias，url_sq，url_t，url_s，url_q，url_m，url_n，url_z，url_c，url_l，url_o
+- per_page （可选的）
+每页返回的照片数。如果省略此参数，则默认为100。最大允许值为500。
+- page （可选的）
+要返回的结果页面。如果省略此参数，则默认为1。
+
 ```sh
 wget https://www.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=475486054f5b1afa16fefe55415fa546&format=json&nojsoncallback=1
 ```
@@ -131,12 +144,9 @@ wget https://www.flickr.com/services/rest/?method=flickr.interestingness.getList
 若要將 <photo> 元素對映至 URL，請閱讀  [URL說明文件](https://www.flickr.com/services/api/misc.urls.html)。
 
 > URL 會採用以下格式：
-
-https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-    or
-https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
-    or
-https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{o-secret}_o.(jpg|gif|png)
+- https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+- https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
+- https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{o-secret}_o.(jpg|gif|png)
 
 样例:
 
