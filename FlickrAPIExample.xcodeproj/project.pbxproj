@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2E5F6345240E58CD00DA1F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F6344240E58CD00DA1F2C /* AppDelegate.swift */; };
-		2E5F6347240E58CD00DA1F2C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F6346240E58CD00DA1F2C /* SceneDelegate.swift */; };
 		2E5F6349240E58CD00DA1F2C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F6348240E58CD00DA1F2C /* ViewController.swift */; };
 		2E5F634C240E58CD00DA1F2C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E5F634A240E58CD00DA1F2C /* Main.storyboard */; };
 		2E5F634E240E58D000DA1F2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E5F634D240E58D000DA1F2C /* Assets.xcassets */; };
@@ -37,7 +36,6 @@
 /* Begin PBXFileReference section */
 		2E5F6341240E58CD00DA1F2C /* FlickrAPIExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrAPIExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E5F6344240E58CD00DA1F2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2E5F6346240E58CD00DA1F2C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		2E5F6348240E58CD00DA1F2C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2E5F634B240E58CD00DA1F2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2E5F634D240E58D000DA1F2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +47,7 @@
 		2E5F6362240E58D000DA1F2C /* FlickrAPIExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrAPIExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E5F6366240E58D000DA1F2C /* FlickrAPIExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrAPIExampleUITests.swift; sourceTree = "<group>"; };
 		2E5F6368240E58D000DA1F2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2E5F6374240E5B5000DA1F2C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +78,7 @@
 		2E5F6338240E58CD00DA1F2C = {
 			isa = PBXGroup;
 			children = (
+				2E5F6374240E5B5000DA1F2C /* README.md */,
 				2E5F6343240E58CD00DA1F2C /* FlickrAPIExample */,
 				2E5F635A240E58D000DA1F2C /* FlickrAPIExampleTests */,
 				2E5F6365240E58D000DA1F2C /* FlickrAPIExampleUITests */,
@@ -100,7 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				2E5F6344240E58CD00DA1F2C /* AppDelegate.swift */,
-				2E5F6346240E58CD00DA1F2C /* SceneDelegate.swift */,
 				2E5F6348240E58CD00DA1F2C /* ViewController.swift */,
 				2E5F634A240E58CD00DA1F2C /* Main.storyboard */,
 				2E5F634D240E58D000DA1F2C /* Assets.xcassets */,
@@ -261,7 +260,6 @@
 			files = (
 				2E5F6349240E58CD00DA1F2C /* ViewController.swift in Sources */,
 				2E5F6345240E58CD00DA1F2C /* AppDelegate.swift in Sources */,
-				2E5F6347240E58CD00DA1F2C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +435,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SRW54YFJJ3;
 				INFOPLIST_FILE = FlickrAPIExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,6 +454,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SRW54YFJJ3;
 				INFOPLIST_FILE = FlickrAPIExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
