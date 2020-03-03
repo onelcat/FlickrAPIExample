@@ -1,6 +1,6 @@
-#  样例代码
+#  FlickrAPIExample
 
-## 需要用到的API集合
+## 前菜
 
 1. 注册Flickr
 2. 申请应用获取API_KEY
