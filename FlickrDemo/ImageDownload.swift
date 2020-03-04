@@ -120,17 +120,17 @@ struct ImageDownloader {
                     fatalError()
                 }
                 
-//                if let key = resopnd?.url,let task = self.task(for: key) {
-//                    self.cache.setObject(data as NSData, forKey: key.absoluteString as NSString)
-//                    self.remove(url: key)
-//                    debuglog("从任务队列返回数据",key.absoluteString == url.absoluteString,url)
-//                    DispatchQueue.main.async {
-//                        task.callback(.success(image))
-//                    }
-//                    return
-//                } else {
-//                    debuglog("抛弃任务")
-//                }
+                if let key = resopnd?.url,let task = self.task(for: key) {
+                    self.cache.setObject(data as NSData, forKey: key.absoluteString as NSString)
+                    self.remove(url: key)
+                    debuglog("从任务队列返回数据",key.absoluteString == url.absoluteString,url)
+                    DispatchQueue.main.async {
+                        task.callback(.success(image))
+                    }
+                    return
+                } else {
+                    debuglog("抛弃任务")
+                }
                 
                 DispatchQueue.main.async {
                     debuglog("直接返回❌❌❌❌❌",url.absoluteString)
@@ -141,8 +141,8 @@ struct ImageDownloader {
             } // task
             
             task.resume()
-//            let workCount = self.add(task, url: url, callback: completionHandler)
-//            debuglog("需要执行的任务",workCount)
+            let workCount = self.add(task, url: url, callback: completionHandler)
+            debuglog("需要执行的任务",workCount)
         } // downloaderQueue.async
         
         

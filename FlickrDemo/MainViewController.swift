@@ -144,9 +144,18 @@ extension MainViewController: UICollectionViewDelegate {
         guard let cell = cell as? ImageViewCollectionViewCell else {
             fatalError()
         }
-        
-//        let imageView = cell.imageView
-//        let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+        let imageView = cell.imageView
+        let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+        imageView?.image = nil
+        ImageDownloader.shared.downloadImage(url: url) { (result) in
+            switch result {
+            case .failure(_):
+                fatalError()
+            case let .success(image):
+                imageView?.image = image
+            }
+        }
+
 //        imageView?.kf.setImage(
 //              with: url,
 //              placeholder: nil,
@@ -180,7 +189,7 @@ extension MainViewController: UICollectionViewDelegate {
         let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
 //        let imageView = cell.imageView
 //        imageView?.kf.cancelDownloadTask()
-//        ImageDownloader.shared.remove(url: url)
+        ImageDownloader.shared.remove(url: url)
     }
 
     
