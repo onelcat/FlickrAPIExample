@@ -129,7 +129,7 @@ extension MainViewController: UICollectionViewDataSource {
 extension MainViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let valeu = self.dataSource else {
+        guard let value = self.dataSource else {
             fatalError()
         }
         // 调用下载线程
