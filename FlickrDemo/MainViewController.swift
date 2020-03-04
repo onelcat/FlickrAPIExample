@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MainViewController: UIViewController {
 
@@ -106,19 +107,8 @@ extension MainViewController: UICollectionViewDataSource {
             fatalError()
         }
         
-        let item = value.photo[indexPath.item]
-//        assert(item.farm != 0)
-        let url = item.getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
-//        debuglog("解析数据出错",item.farm)
-        ImageDownloader.shared.downloadImage(url: url) { (result) in
-            switch result {
-            case let .failure(error):
-//                fatalError(error.localizedDescription)
-                debuglog("图片地址错误",error.localizedDescription)
-            case let .success(image):
-                cell.imageView.image = image
-            }
-        }
+        cell.imageView.kf.indicatorType = .activity
+        
         return cell
         
     }
@@ -126,21 +116,43 @@ extension MainViewController: UICollectionViewDataSource {
     
 }
 
+extension MainViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard let photos = self.dataSource?.photo else {
+            fatalError()
+        }
+        let urls = indexPaths.compactMap { (index) -> URL in
+            let url = photos[index.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+            return url
+        }
+        ImagePrefetcher(urls: urls).start()
+    }
+}
+
 extension MainViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let value = self.dataSource else {
+        guard let photos = self.dataSource?.photo else {
             fatalError()
         }
-        // 调用下载线程
+        guard let cell = cell as? ImageViewCollectionViewCell else {
+            fatalError()
+        }
         
-//        let item = valeu.photo[indexPath.item]
-//        
-//        let url = item.getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
-//        
-//        ImageDownloader.shared.downloadImage(url: url) { (result) in
-//            // 先缓存
-//        }
+        let imageView = cell.imageView
+        let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+        imageView?.kf.setImage(
+              with: url,
+              placeholder: nil,
+              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
+              progressBlock: { receivedSize, totalSize in
+                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
+              },
+              completionHandler: { result in
+                  print(result)
+                  print("\(indexPath.row + 1): Finished")
+              }
+          )
         
         
     }
@@ -153,6 +165,11 @@ extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 
         // 清除下载线程
+        guard let cell = cell as? ImageViewCollectionViewCell else {
+            fatalError()
+        }
+        let imageView = cell.imageView
+        imageView?.kf.cancelDownloadTask()
     }
 
     
