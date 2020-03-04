@@ -68,7 +68,7 @@ struct ImageDownloader {
         guard let task = self.tasks.value(forKey: url.absoluteString) as? SessionDoneTask  else {
             return
         }
-        task.dataTask.cancel()
+//        task.dataTask.cancel()
         self.tasks.removeObject(forKey: url.absoluteString)
 //        lock.unlock()
     }
