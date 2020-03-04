@@ -22,8 +22,6 @@ final class MainViewController: UIViewController {
     
     private var dataSource: PhotosModel?
     
-    
-    
     lazy var adapter: ListAdapter = {
         return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
     }()
@@ -46,6 +44,8 @@ final class MainViewController: UIViewController {
         let pageCount = columnCount * hCount
         self.itemLength = itemLength
         
+        let pixWidth = itemLength * UIScreen.main.scale
+        debuglog("pixWidth",pixWidth)
         API.shared.interestingnessGetList(per_page: Int(pageCount)) { [weak self] (result) in
             switch result {
             case let .failure(error):
@@ -118,13 +118,14 @@ extension MainViewController: UIScrollViewDelegate {
                         self.adapter.performUpdates(animated: true, completion: nil)
                     }
                     
-                }
-                
-
-            }
+                } // switch
             
-        }
-    }
+            } // interestingnessGetList
+            
+        } // if
+        
+    } // func
+    
 }
 
 
@@ -139,21 +140,17 @@ extension MainViewController: ImageViewSectionControllerDelegate {
         vc.dataSource = data
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    
+        
 }
-
-
 
 protocol ImageViewSectionControllerDelegate: class {
     func didSelectItem(_ itemData: PhotoModel?)
 }
 
+
+// MARK: ImageViewSectionController
 final class ImageViewSectionController: ListSectionController,ListWorkingRangeDelegate {
     
-
-    
-
     private var object: PhotoModel?
     weak var delegate: ImageViewSectionControllerDelegate?
     
@@ -183,7 +180,7 @@ final class ImageViewSectionController: ListSectionController,ListWorkingRangeDe
                                                                     fatalError()
         }
         
-        cell.imageView.kf.setImage(with: object!.imageURL)
+        cell.imageView.kf.setImage(with: object!.getImageURL(size: self.itemSize))
         return cell
     }
 
@@ -199,7 +196,7 @@ final class ImageViewSectionController: ListSectionController,ListWorkingRangeDe
     // ListWorkingRangeDelegate
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerWillEnterWorkingRange sectionController: ListSectionController) {
         if let cell = self.collectionContext?.cellForItem(at: 1, sectionController: self) as? ImageCollectionViewCell {
-            cell.imageView.kf.setImage(with: object!.imageURL)
+            cell.imageView.kf.setImage(with: object!.getImageURL(size: self.itemSize))
         } else {
             fatalError()
         }

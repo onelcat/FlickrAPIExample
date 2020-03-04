@@ -31,8 +31,10 @@ final class InfoViewController: UIViewController {
         guard let value = self.dataSource else {
             fatalError("数据错误")
         }
-            
-        self.imageView.kf.setImage(with: value.imageURL)
+        API.shared.getPhotoInfo(photo: value)
+        let url = value.getImageURL(size: CGSize(width: self.view.bounds.width, height: self.view.bounds.width))
+        self.title = value.title
+        self.imageView.kf.setImage(with: url)
         self.nameLabel.text = "作者: " + value.ownername
         self.dateLabel.text = "日期: " + value.dateupload
 

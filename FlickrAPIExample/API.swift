@@ -8,7 +8,7 @@
 
 import Alamofire
 import ObjectMapper
-
+import UIKit
 
 struct API {
     
@@ -22,12 +22,38 @@ struct API {
     
     init() { }
     
-    // 时间格式化
     
+    
+    
+    func getPhotoInfo(photo: PhotoModel) {
+        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=475486054f5b1afa16fefe55415fa546&photo_id=\(photo.id)&secret=\(photo.secret)&format=json&nojsoncallback=1"
+        AF.request(url).responseString { (resultData) in
+            switch resultData.result {
+            case let .success(value):
+                debuglog("请求成功",value)
+            case let .failure(error):
+                debuglog("请求失败",error.localizedDescription)
+            }
+        }
+    }
+    
+    func getPhotoSize(photo: PhotoModel) {
+        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=475486054f5b1afa16fefe55415fa546&photo_id=\(photo.id)&format=json&nojsoncallback=1"
+        
+        AF.request(url).responseString { (resultData) in
+            switch resultData.result {
+            case let .success(value):
+                debuglog("请求成功",value)
+            case let .failure(error):
+                debuglog("请求失败",error.localizedDescription)
+            }
+        }
+        
+    }
     
     func interestingnessGetList(date: Date = Date(),page: Int = 1,per_page: Int = 200,completionHandler: @escaping (_ result: Result<PhotosModel,Error>) -> Void) {
 
-        let yesterdays = Date(timeIntervalSince1970: date.timeIntervalSince1970 - 2*86400)
+        let yesterdays = Date(timeIntervalSince1970: date.timeIntervalSince1970 - 1*86400)
         
         let url = root_url + "&date=\(yesterdays.dateFormat(formatter: "yyyy-MM-dd"))" + "&page=\(page)&per_page=\(per_page)" + "&extras=description,date_upload,owner_name"
 
@@ -56,26 +82,37 @@ struct API {
         
     }// func
     
-//    s    小正方形 75x75
-//    q    large square 150x150
-//    t    縮圖，最長邊為 100
-//    m    小，最長邊為 240
-//    n    small, 320 on longest side
-//    -    中等，最長邊為 500
-//    z    中等尺寸 640，最長邊為 640
-//    c    中等尺寸 800，最長邊為 800†
-//    b    大尺寸，最長邊為 1024*
-//    h    大型 1600，長邊 1600†
-//    k    大型 2048，長邊 2048†
-//    o    原始圖片, 根據來源格式可以是 jpg、gif 或 png
-//    https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-//        or
-//    https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
-//        or
-//    https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{o-secret}_o.(jpg|gif|png)
+    static func sizeTransformToType(width: CGFloat) -> String {
+        if width <= 75.0 {
+            return "_s"
+        }
+        else if width <= 100.0 {
+            return "_t"
+        }
+        else if width <= 150.0 {
+            return "_q"
+        }
+        else if width <= 240.0 {
+            return "_m"
+        }
+        else if width <= 320.0 {
+            return "_n"
+        }
+        else if width <= 500.0 {
+            return ""
+        }
+        else if width <= 640.0 {
+            return "_z"
+        }
+        else if width <= 800.0 {
+            return "_c"
+        }
+        return "_b"
+    }
     
-    static func photoModelTransformToImageURL(_ photo: PhotoModel) -> URL {
-        let url = "https://farm\(photo.farm).staticflickr.com/\(photo.server)/\(photo.id)_\(photo.secret).jpg"
+    static func photoModelTransformToImageURL(_ photo: PhotoModel,itemSize: CGSize) -> URL {
+        let type = sizeTransformToType(width: itemSize.width * UIScreen.main.scale)
+        let url = "https://farm\(photo.farm).staticflickr.com/\(photo.server)/\(photo.id)_\(photo.secret)\(type).jpg"
         return URL(string: url)!
     }
     

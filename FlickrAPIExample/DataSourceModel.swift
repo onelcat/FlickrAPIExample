@@ -72,9 +72,14 @@ class PhotoModel: Mappable,ListDiffable {
     var description: String? = nil
     
     
-    var imageURL: URL {
-        return API.photoModelTransformToImageURL(self)
+//    var imageURL: URL {
+//        return API.photoModelTransformToImageURL(self)
+//    }
+    
+    func getImageURL(size: CGSize) -> URL {
+        return API.photoModelTransformToImageURL(self, itemSize: size)
     }
+    
     
     required init?(map: Map) {
         
@@ -124,7 +129,7 @@ struct DescriptionTransform:TransformType {
     }
     
     func transformToJSON(_ value: String?) -> [String : Any]? {
-        fatalError("这里不会掉用到")
+        fatalError()
     }
     
     typealias Object = String
