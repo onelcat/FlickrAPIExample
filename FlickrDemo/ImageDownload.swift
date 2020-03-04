@@ -109,8 +109,6 @@ struct ImageDownloader {
         
         
         self.downloaderQueue.async {
-//            self.lock.lock()
-//            defer { self.lock.unlock() }
             let task = URLSession.shared.dataTask(with: url) { data, resopnd, error in
                 
                 if let error = error {
@@ -122,19 +120,19 @@ struct ImageDownloader {
                 }
                 
                 if let key = resopnd?.url,let task = self.task(for: key) {
-                    self.cache.setObject(data as NSData, forKey: url.absoluteString as NSString)
+//                    self.cache.setObject(data as NSData, forKey: url.absoluteString as NSString)
                     self.remove(url: key)
-                    debuglog("从任务队列返回数据",task.callback)
-                    DispatchQueue.main.async {
-                        task.callback(.success(image))
-                    }
-                    return
+//                    debuglog("从任务队列返回数据",task.callback)
+//                    DispatchQueue.main.async {
+//                        task.callback(.success(image))
+//                    }
+//                    return
                 } else {
                     debuglog("抛弃任务")
                 }
                 
                 DispatchQueue.main.async {
-                    debuglog("直接返回❌❌❌❌❌")
+                    debuglog("直接返回❌❌❌❌❌",url.absoluteString,completionHandler)
                     self.cache.setObject(data as NSData, forKey: url.absoluteString as NSString)
                     completionHandler(.success(image))
                 }
