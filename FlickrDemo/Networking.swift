@@ -64,7 +64,7 @@ struct API {
                 guard let value = data,let jsonStr = String(data: value, encoding: String.Encoding.utf8) else {
                     fatalError()
                 }
-
+                debuglog("请求到的字符串",jsonStr)
                 if let result = Mapper<ResultModel>().map(JSONString: jsonStr) {
                     if result.code == 0,let photos = result.photos  {
                         completionHandler(.success(photos))
@@ -140,7 +140,8 @@ struct API {
     
     static func photoModelTransformToImageURL(_ photo: PhotoModel,itemSize: CGSize) -> URL {
         let type = sizeTransformToType(width: itemSize.width * UIScreen.main.scale)
-        let url = "https://farm\(photo.farm).staticflickr.com/\(photo.server)/\(photo.id)_\(photo.secret)\(type).jpg"
+        let farm = photo.farm == 0 ? 66 : photo.farm
+        let url = "https://farm\(farm).staticflickr.com/\(photo.server)/\(photo.id)_\(photo.secret)\(type).jpg"
         return URL(string: url)!
     }
     

@@ -63,6 +63,7 @@ class PhotoModel: Mappable {
     
     
     func getImageURL(size: CGSize) -> URL {
+        
         return API.photoModelTransformToImageURL(self, itemSize: size)
     }
     

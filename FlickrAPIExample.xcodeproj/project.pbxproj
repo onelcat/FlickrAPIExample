@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E438B66240F9972005A8206 /* ImageDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E438B65240F9972005A8206 /* ImageDownload.swift */; };
 		2E5F6345240E58CD00DA1F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F6344240E58CD00DA1F2C /* AppDelegate.swift */; };
 		2E5F6349240E58CD00DA1F2C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F6348240E58CD00DA1F2C /* MainViewController.swift */; };
 		2E5F634C240E58CD00DA1F2C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E5F634A240E58CD00DA1F2C /* Main.storyboard */; };
@@ -112,6 +113,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E438B65240F9972005A8206 /* ImageDownload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownload.swift; sourceTree = "<group>"; };
 		2E5F6341240E58CD00DA1F2C /* FlickrAPIExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrAPIExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E5F6344240E58CD00DA1F2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2E5F6348240E58CD00DA1F2C /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				2E726B92240F72D600E3A835 /* LaunchScreen.storyboard */,
 				2E726B95240F72D600E3A835 /* Info.plist */,
 				2E726BBF240F759600E3A835 /* Networking.swift */,
+				2E438B65240F9972005A8206 /* ImageDownload.swift */,
 			);
 			path = FlickrDemo;
 			sourceTree = "<group>";
@@ -586,6 +589,7 @@
 				2E726BBC240F754F00E3A835 /* Date_Extesion.swift in Sources */,
 				2E726B88240F72D300E3A835 /* AppDelegate.swift in Sources */,
 				2E726BC0240F759600E3A835 /* Networking.swift in Sources */,
+				2E438B66240F9972005A8206 /* ImageDownload.swift in Sources */,
 				2E726BB8240F749C00E3A835 /* InfoViewController.swift in Sources */,
 				2E726BBA240F750600E3A835 /* DataSource.swift in Sources */,
 				2E726BBE240F756400E3A835 /* HSLog.swift in Sources */,
@@ -931,7 +935,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = onelcat.github.io.FlickrDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = onelcat.github.io.FlickrDemo..;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -954,7 +958,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = onelcat.github.io.FlickrDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = onelcat.github.io.FlickrDemo..;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

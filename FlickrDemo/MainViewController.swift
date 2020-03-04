@@ -22,8 +22,8 @@ class MainViewController: UIViewController {
     private var itemLength: CGFloat = 0
     
     private var loading: Bool = false
-    
-    private var isMore: Bool = true
+    private var page = 1
+//    private var isMore: Bool = true
     
     private var dataSource: PhotosModel?
     
@@ -37,16 +37,16 @@ class MainViewController: UIViewController {
         
         // 计算出一页有多少条数据
         let width = UIScreen.main.bounds.inset(by: view.safeAreaInsets).width
-        let heitgh = UIScreen.main.bounds.inset(by: view.safeAreaInsets).height
+//        let heitgh = UIScreen.main.bounds.inset(by: view.safeAreaInsets).height
         let columnCount = (width / 80).rounded(.towardZero)
         let itemLength = (width - ((columnCount - 1) * 2)) / columnCount
-        let hCount = (heitgh / itemLength).rounded(.up)
-        let pageCount = columnCount * hCount
+//        let hCount = (heitgh / itemLength).rounded(.up)
+//        let pageCount = columnCount * hCount
         self.itemLength = itemLength
         
-        let pixWidth = itemLength * UIScreen.main.scale
-        debuglog("pixWidth",pixWidth)
-        API.shared.interestingnessGetList(per_page: Int(pageCount)) { [weak self] (result) in
+//        let pixWidth = itemLength * UIScreen.main.scale
+//        debuglog("pixWidth",pixWidth)
+        API.shared.interestingnessGetList(per_page: Int(100.0)) { [weak self] (result) in
             switch result {
             case let .failure(error):
                 fatalError(error.localizedDescription)
@@ -101,8 +101,26 @@ extension MainViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageViewCell", for: indexPath) as? ImageViewCollectionViewCell else {
             fatalError()
         }
-//        cell.imageView.
+
+        guard let value = self.dataSource else {
+            fatalError()
+        }
+        
+        let item = value.photo[indexPath.item]
+//        assert(item.farm != 0)
+        let url = item.getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+//        debuglog("解析数据出错",item.farm)
+        ImageDownloader.shared.downloadImage(url: url) { (result) in
+            switch result {
+            case let .failure(error):
+//                fatalError(error.localizedDescription)
+                debuglog("图片地址错误",error.localizedDescription)
+            case let .success(image):
+                cell.imageView.image = image
+            }
+        }
         return cell
+        
     }
     
     
@@ -111,8 +129,20 @@ extension MainViewController: UICollectionViewDataSource {
 extension MainViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
+        guard let valeu = self.dataSource else {
+            fatalError()
+        }
         // 调用下载线程
+        
+//        let item = valeu.photo[indexPath.item]
+//        
+//        let url = item.getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+//        
+//        ImageDownloader.shared.downloadImage(url: url) { (result) in
+//            // 先缓存
+//        }
+        
+        
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
@@ -148,29 +178,43 @@ extension MainViewController: UIScrollViewDelegate {
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        debuglog("需要加载更多数据")
+//        debuglog("需要加载更多数据")
         guard let dataSource = self.dataSource else {
             fatalError()
         }
         
+        if dataSource.total <= dataSource.photo.count {
+            debuglog("已经加载完成", dataSource.total,dataSource.photo.count)
+            return
+        }
+        
         let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
-        if !loading && distance < 200 && isMore {
+        
+        if !loading && distance < 200 {
+            
             loading = true
             
-            API.shared.interestingnessGetList(date: Date(), page: dataSource.page + 1, per_page: dataSource.perpage) { (result) in
+            API.shared.interestingnessGetList(date: Date(), page: page, per_page: dataSource.perpage) { (result) in
                 
                 switch result {
                 case let .failure(error):
                     fatalError(error.localizedDescription)
                 case let .success(value):
 //                    DispatchQueue.main.async {
-                        debuglog("当前线程",Thread.current)
+                        
                         self.loading = false
                         self.dataSource?.page = value.page
                         self.dataSource?.total = value.total
                         self.dataSource?.photo = dataSource.photo + value.photo
-                        debuglog("获取的数据",value.perpage,value.photo.count)
-                        self.isMore = value.photo.count != 0
+                        debuglog("获取的数据",value.perpage,dataSource.photo.count,value.photo.count)
+                        let count = dataSource.photo.count + value.photo.count
+                        if value.total == 
+                        if count > value.total {
+                            self.dataSource?.photo.removeLast(count - value.total)
+                        }
+                        
+                    
+//                        self.isMore = value.page != value.pages
 //                        var indexPaths = [IndexPath]()
 //                        for i in 0..<value.photo.count {
 //                            let row = dataSource.photo.count + i
