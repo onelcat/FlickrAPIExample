@@ -18,12 +18,7 @@ struct API {
     
     private let root_url = "https://www.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=475486054f5b1afa16fefe55415fa546&format=json&nojsoncallback=1"
     
-//    private var dataSource: PhotosModel?
-    
     init() { }
-    
-    
-    
     
     func getPhotoInfo(photo: PhotoModel) {
         let url = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=475486054f5b1afa16fefe55415fa546&photo_id=\(photo.id)&secret=\(photo.secret)&format=json&nojsoncallback=1"
@@ -57,28 +52,61 @@ struct API {
         
         let url = root_url + "&date=\(yesterdays.dateFormat(formatter: "yyyy-MM-dd"))" + "&page=\(page)&per_page=\(per_page)" + "&extras=description,date_upload,owner_name"
 
-        AF.request(url).responseString { (resultData) in
-            
-            switch resultData.result {
-            case let .success(value):
-                
-                if let result = Mapper<ResultModel>().map(JSONString: value) {
+        let task = URLSession.shared.dataTask(with: URL.init(string: url)!) { (data, _, error) in
+
+            DispatchQueue.main.async {
+                if let error = error {
+                    debuglog("请求失败",error.localizedDescription)
+                    completionHandler(.failure(error))
+                    return
+                }
+
+                guard let value = data,let jsonStr = String(data: value, encoding: String.Encoding.utf8) else {
+                    fatalError()
+                }
+
+                if let result = Mapper<ResultModel>().map(JSONString: jsonStr) {
                     if result.code == 0,let photos = result.photos  {
                         completionHandler(.success(photos))
                     } else {
                         let error = NSError(domain: result.message, code: result.code, userInfo: nil)
+                        assert(false)
                         completionHandler(.failure(error))
                     }
                 } else {
                     let error = NSError(domain: "io.onelcat.github mapper is null", code: 100036, userInfo: nil)
+                    assert(false)
                     completionHandler(.failure(error))
+
                 }
-                
-            case let .failure(error):
-                debuglog("请求失败",error.errorDescription ?? "一个未知错误")
-            } // switch resultData.result
-            
-        } // AF.request(url).responseString
+            }
+
+        }
+        
+        task.resume()
+        
+//        AF.request(url).responseString { (resultData) in
+//
+//            switch resultData.result {
+//            case let .success(value):
+//
+//                if let result = Mapper<ResultModel>().map(JSONString: value) {
+//                    if result.code == 0,let photos = result.photos  {
+//                        completionHandler(.success(photos))
+//                    } else {
+//                        let error = NSError(domain: result.message, code: result.code, userInfo: nil)
+//                        completionHandler(.failure(error))
+//                    }
+//                } else {
+//                    let error = NSError(domain: "io.onelcat.github mapper is null", code: 100036, userInfo: nil)
+//                    completionHandler(.failure(error))
+//                }
+//
+//            case let .failure(error):
+//                debuglog("请求失败",error.errorDescription ?? "一个未知错误")
+//            } // switch resultData.result
+//
+//        } // AF.request(url).responseString
         
     }// func
     
@@ -116,4 +144,13 @@ struct API {
         return URL(string: url)!
     }
     
+    
+//    func request(_ url: String) {
+//        URLSession.shared.dataTask(with: URL.init(string: url)!) { (data, _, error) in
+//            guard let value = data else {
+//                fatalError()
+//            }
+//            let jsonStr = String(data: value, encoding: String.Encoding.utf8)
+//        }
+//    }
 }

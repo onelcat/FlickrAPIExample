@@ -60,7 +60,7 @@ final class InfoViewController: UIViewController {
 
 extension InfoViewController: WKUIDelegate,WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        let jsStr = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '160%'"
+        let jsStr = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '180%'"
         self.descriptionView.evaluateJavaScript(jsStr) { (evaluation, erro) in
             
         }

@@ -130,7 +130,11 @@ extension MainViewController: UICollectionViewDelegate {
         guard let item = self.dataSource?.photo[indexPath.item] else {
             fatalError()
         }
-        let vc = InfoViewController()
+
+        guard let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InfoViewController") as? InfoViewController else {
+            fatalError()
+        }
+        
         vc.dataSource = item
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -138,6 +142,11 @@ extension MainViewController: UICollectionViewDelegate {
 }
 
 extension MainViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        debuglog("滑动完成 需要缓存数据")
+    }
+    
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         debuglog("需要加载更多数据")
         guard let dataSource = self.dataSource else {
@@ -154,12 +163,14 @@ extension MainViewController: UIScrollViewDelegate {
                 case let .failure(error):
                     fatalError(error.localizedDescription)
                 case let .success(value):
-                    DispatchQueue.main.async {
+//                    DispatchQueue.main.async {
+                        debuglog("当前线程",Thread.current)
                         self.loading = false
                         self.dataSource?.page = value.page
                         self.dataSource?.total = value.total
                         self.dataSource?.photo = dataSource.photo + value.photo
-                        self.isMore = value.pages == value.photo.count
+                        debuglog("获取的数据",value.perpage,value.photo.count)
+                        self.isMore = value.photo.count != 0
 //                        var indexPaths = [IndexPath]()
 //                        for i in 0..<value.photo.count {
 //                            let row = dataSource.photo.count + i
@@ -167,7 +178,7 @@ extension MainViewController: UIScrollViewDelegate {
 //                        }
 //                        self.collectionView.reloadItems(at: indexPaths)
                         self.collectionView.reloadData()
-                    }
+//                    }
                     
                 } // switch
             
