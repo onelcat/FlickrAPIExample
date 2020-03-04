@@ -95,6 +95,7 @@ struct ImageDownloader {
             guard let image = UIImage(data: data as Data) else {
                 fatalError()
             }
+            self.remove(url: url)
             completionHandler(.success(image))
             return
         }

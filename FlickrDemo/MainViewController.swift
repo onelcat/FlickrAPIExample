@@ -189,6 +189,7 @@ extension MainViewController: UICollectionViewDelegate {
         let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
 //        let imageView = cell.imageView
 //        imageView?.kf.cancelDownloadTask()
+        cell.imageView.image = nil
         ImageDownloader.shared.remove(url: url)
     }
 
