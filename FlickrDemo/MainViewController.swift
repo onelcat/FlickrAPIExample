@@ -95,22 +95,26 @@ extension MainViewController: UICollectionViewDataSource {
             fatalError()
         }
         
-
-        cell.imageView.kf.indicatorType = .activity
         let imageView = cell.imageView
         let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
-        imageView?.kf.setImage(
-              with: url,
-              placeholder: nil,
-              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
-              progressBlock: { receivedSize, totalSize in
-//                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
-              },
-              completionHandler: { result in
-//                  print(result)
-//                  print("\(indexPath.row + 1): Finished")
-              }
-          )
+        ImageDownloader.shared.downloadImage(url: url) { (result) in
+            switch result {
+            case .failure(_):
+                fatalError()
+            case let .success(image):
+                imageView?.image = image
+            }
+        }
+//        cell.imageView.kf.indicatorType = .activity
+//        imageView?.kf.setImage(
+//              with: url,
+//              placeholder: nil,
+//              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
+//              progressBlock: { receivedSize, totalSize in
+//              },
+//              completionHandler: { result in
+//              }
+//          )
         return cell
         
     }
@@ -120,14 +124,14 @@ extension MainViewController: UICollectionViewDataSource {
 
 extension MainViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        guard let photos = self.dataSource?.photo else {
-            fatalError()
-        }
-        let urls = indexPaths.compactMap { (index) -> URL in
-            let url = photos[index.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
-            return url
-        }
-        ImagePrefetcher(urls: urls).start()
+//        guard let photos = self.dataSource?.photo else {
+//            fatalError()
+//        }
+//        let urls = indexPaths.compactMap { (index) -> URL in
+//            let url = photos[index.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+//            return url
+//        }
+//        ImagePrefetcher(urls: urls).start()
     }
 }
 
@@ -170,8 +174,13 @@ extension MainViewController: UICollectionViewDelegate {
         guard let cell = cell as? ImageViewCollectionViewCell else {
             fatalError()
         }
-        let imageView = cell.imageView
-        imageView?.kf.cancelDownloadTask()
+        guard let photos = self.dataSource?.photo else {
+            fatalError()
+        }
+        let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+//        let imageView = cell.imageView
+//        imageView?.kf.cancelDownloadTask()
+//        ImageDownloader.shared.remove(url: url)
     }
 
     

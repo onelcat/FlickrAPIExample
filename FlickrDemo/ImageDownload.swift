@@ -27,6 +27,7 @@ struct ImageDownloader {
     private let cache: NSCache<NSString, NSData> = NSCache<NSString, NSData>()
     
     // url : SessionDoneTask
+
     private let tasks: NSMutableDictionary = NSMutableDictionary()
     
     func add(
@@ -63,12 +64,13 @@ struct ImageDownloader {
     
     func remove(url: URL) {
         lock.lock()
+        defer { lock.unlock() }
         guard let task = self.tasks.value(forKey: url.absoluteString) as? SessionDoneTask  else {
             return
         }
         task.dataTask.cancel()
         self.tasks.removeObject(forKey: url.absoluteString)
-        lock.unlock()
+//        lock.unlock()
     }
     
     private let downloaderQueue: DispatchQueue
@@ -94,6 +96,7 @@ struct ImageDownloader {
                 fatalError()
             }
             completionHandler(.success(image))
+            return
         }
         
         
@@ -121,14 +124,17 @@ struct ImageDownloader {
                 if let key = resopnd?.url,let task = self.task(for: key) {
                     self.cache.setObject(data as NSData, forKey: url.absoluteString as NSString)
                     self.remove(url: key)
+                    debuglog("从任务队列返回数据",task.callback)
                     DispatchQueue.main.async {
                         task.callback(.success(image))
                     }
                     return
+                } else {
+                    debuglog("抛弃任务")
                 }
                 
                 DispatchQueue.main.async {
-                    debuglog("直接返回")
+                    debuglog("直接返回❌❌❌❌❌")
                     self.cache.setObject(data as NSData, forKey: url.absoluteString as NSString)
                     completionHandler(.success(image))
                 }
