@@ -79,16 +79,6 @@ class MainViewController: UIViewController {
         }
     }
     
-//    override func performSegue(withIdentifier identifier: String, sender: Any?) {
-//        debuglog("数据传递",identifier)
-//    }
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        guard let theSegue = segue.destination as? InfoViewController,let value = self.dataSource?.photo[0] else {
-//            fatalError()
-//        }
-//        theSegue.dataSource = value
-//    }
 }
 
 
@@ -103,12 +93,26 @@ extension MainViewController: UICollectionViewDataSource {
             fatalError()
         }
 
-        guard let value = self.dataSource else {
+        guard let photos = self.dataSource?.photo else {
             fatalError()
         }
         
+
         cell.imageView.kf.indicatorType = .activity
-        
+        let imageView = cell.imageView
+        let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+        imageView?.kf.setImage(
+              with: url,
+              placeholder: nil,
+              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
+              progressBlock: { receivedSize, totalSize in
+//                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
+              },
+              completionHandler: { result in
+//                  print(result)
+//                  print("\(indexPath.row + 1): Finished")
+              }
+          )
         return cell
         
     }
@@ -146,11 +150,11 @@ extension MainViewController: UICollectionViewDelegate {
               placeholder: nil,
               options: [.transition(.fade(1)), .loadDiskFileSynchronously],
               progressBlock: { receivedSize, totalSize in
-                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
+//                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
               },
               completionHandler: { result in
-                  print(result)
-                  print("\(indexPath.row + 1): Finished")
+//                  print(result)
+//                  print("\(indexPath.row + 1): Finished")
               }
           )
         
@@ -228,15 +232,7 @@ extension MainViewController: UIScrollViewDelegate {
                         if count > value.total {
                             self.dataSource?.photo.removeLast(count - value.total)
                         }
-                        
-                    
-//                        self.isMore = value.page != value.pages
-//                        var indexPaths = [IndexPath]()
-//                        for i in 0..<value.photo.count {
-//                            let row = dataSource.photo.count + i
-//                            indexPaths.append(IndexPath.init(row: row, section: 1))
-//                        }
-//                        self.collectionView.reloadItems(at: indexPaths)
+
                         self.collectionView.reloadData()
 //                    }
                     
