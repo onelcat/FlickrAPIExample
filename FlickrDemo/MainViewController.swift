@@ -38,16 +38,16 @@ class MainViewController: UIViewController {
         
         // 计算出一页有多少条数据
         let width = UIScreen.main.bounds.inset(by: view.safeAreaInsets).width
-//        let heitgh = UIScreen.main.bounds.inset(by: view.safeAreaInsets).height
+        let heitgh = UIScreen.main.bounds.inset(by: view.safeAreaInsets).height
         let columnCount = (width / 80).rounded(.towardZero)
         let itemLength = (width - ((columnCount - 1) * 2)) / columnCount
-//        let hCount = (heitgh / itemLength).rounded(.up)
-//        let pageCount = columnCount * hCount
+        let hCount = (heitgh / itemLength).rounded(.up)
+        let pageCount = columnCount * hCount
         self.itemLength = itemLength
         
 //        let pixWidth = itemLength * UIScreen.main.scale
 //        debuglog("pixWidth",pixWidth)
-        API.shared.interestingnessGetList(per_page: Int(100.0)) { [weak self] (result) in
+        API.shared.interestingnessGetList(per_page: Int(pageCount)) { [weak self] (result) in
             switch result {
             case let .failure(error):
                 fatalError(error.localizedDescription)
