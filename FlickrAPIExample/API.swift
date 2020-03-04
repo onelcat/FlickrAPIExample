@@ -18,15 +18,16 @@ struct API {
     
     private let root_url = "https://www.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=475486054f5b1afa16fefe55415fa546&format=json&nojsoncallback=1"
     
+//    private var dataSource: PhotosModel?
     
     init() { }
     
     // 时间格式化
     
     
-    func interestingnessGetList(date: Date = Date(),page: Int = 1,per_page: Int = 100,completionHandler: @escaping (_ result: Result<[PhotoModel],Error>) -> Void) {
+    func interestingnessGetList(date: Date = Date(),page: Int = 1,per_page: Int = 200,completionHandler: @escaping (_ result: Result<PhotosModel,Error>) -> Void) {
 
-        let yesterdays = Date(timeIntervalSince1970: date.timeIntervalSince1970 - 86400)
+        let yesterdays = Date(timeIntervalSince1970: date.timeIntervalSince1970 - 2*86400)
         
         let url = root_url + "&date=\(yesterdays.dateFormat(formatter: "yyyy-MM-dd"))" + "&page=\(page)&per_page=\(per_page)" + "&extras=description,date_upload,owner_name"
 
@@ -34,10 +35,14 @@ struct API {
             
             switch resultData.result {
             case let .success(value):
-//                debuglog("请求的字符串数据",value)
-                if let result = Mapper<ResultModel>().map(JSONString: value),result.code == 0 {
-//                    debuglog("一个页面有多少",result.photos?.photo[0])
-                    completionHandler(.success(result.photos?.photo ?? []))
+                
+                if let result = Mapper<ResultModel>().map(JSONString: value) {
+                    if result.code == 0,let photos = result.photos  {
+                        completionHandler(.success(photos))
+                    } else {
+                        let error = NSError(domain: result.message, code: result.code, userInfo: nil)
+                        completionHandler(.failure(error))
+                    }
                 } else {
                     let error = NSError(domain: "io.onelcat.github mapper is null", code: 100036, userInfo: nil)
                     completionHandler(.failure(error))

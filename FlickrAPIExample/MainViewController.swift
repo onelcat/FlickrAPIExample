@@ -14,7 +14,15 @@ final class MainViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var dataSource: [PhotoModel] = []
+    private var availableWidth: CGFloat = 0
+    
+    private var itemLength: CGFloat = 0
+    
+    private var loading: Bool = false
+    
+    private var dataSource: PhotosModel?
+    
+    
     
     lazy var adapter: ListAdapter = {
         return ListAdapter(updater: ListAdapterUpdater(), viewController: self)
@@ -23,16 +31,26 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         adapter.collectionView = collectionView
         adapter.dataSource = self
+        adapter.scrollViewDelegate = self
         
-        API.shared.interestingnessGetList { [weak self] (result) in
+        // 计算出一页有多少条数据
+        let width = UIScreen.main.bounds.inset(by: view.safeAreaInsets).width
+        let heitgh = UIScreen.main.bounds.inset(by: view.safeAreaInsets).height
+        let columnCount = (width / 80).rounded(.towardZero)
+        let itemLength = (width - ((columnCount - 1) * 2)) / columnCount
+        self.availableWidth = width
+        let hCount = (heitgh / itemLength).rounded(.up)
+        let pageCount = columnCount * hCount
+        self.itemLength = itemLength
+        
+        API.shared.interestingnessGetList(per_page: Int(pageCount)) { [weak self] (result) in
             switch result {
             case let .failure(error):
                 fatalError(error.localizedDescription)
             case let .success(value):
-//                debuglog("加载数据",value.count)
                 self?.dataSource = value
                 self?.adapter.performUpdates(animated: false, completion: nil)
             }
@@ -40,20 +58,22 @@ final class MainViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
-
-
+    
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+    }
 }
 
 // MARK: ListAdapterDataSource
 
 extension MainViewController: ListAdapterDataSource {
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        
-        return dataSource
+        return dataSource?.photo ?? []
     }
     
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        let sectionController = ImageViewSectionController()
+        let sectionController = ImageViewSectionController(itemSize: CGSize(width: self.itemLength, height: self.itemLength))
         sectionController.delegate = self
         return sectionController
     }
@@ -64,6 +84,50 @@ extension MainViewController: ListAdapterDataSource {
     
 }
 
+
+extension MainViewController: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        guard let dataSource = self.dataSource else {
+            fatalError()
+        }
+        
+        guard dataSource.photo.count < dataSource.total else {
+            // 数据加载完成
+            debuglog("数据加载完成", dataSource.photo.count,dataSource.total)
+            return
+        }
+        
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        if !loading && distance < 200 {
+            loading = true
+            
+            adapter.performUpdates(animated: true, completion: nil)
+            
+            API.shared.interestingnessGetList(date: Date(), page: dataSource.page + 1, per_page: dataSource.perpage) { (result) in
+                
+                switch result {
+                case let .failure(error):
+                    fatalError(error.localizedDescription)
+                case let .success(value):
+                    DispatchQueue.main.async {
+                        self.loading = false
+                        self.dataSource?.page = value.page
+                        self.dataSource?.total = value.total
+                        self.dataSource?.photo = dataSource.photo + value.photo
+                        self.adapter.performUpdates(animated: true, completion: nil)
+                    }
+                    
+                }
+                
+
+            }
+            
+        }
+    }
+}
+
+
 extension MainViewController: ImageViewSectionControllerDelegate {
     func didSelectItem(_ itemData: PhotoModel?) {
         
@@ -71,6 +135,7 @@ extension MainViewController: ImageViewSectionControllerDelegate {
             fatalError()
             
         }
+        
         vc.dataSource = data
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -78,17 +143,35 @@ extension MainViewController: ImageViewSectionControllerDelegate {
     
 }
 
+
+
 protocol ImageViewSectionControllerDelegate: class {
     func didSelectItem(_ itemData: PhotoModel?)
 }
 
-final class ImageViewSectionController: ListSectionController {
+final class ImageViewSectionController: ListSectionController,ListWorkingRangeDelegate {
+    
+
+    
 
     private var object: PhotoModel?
     weak var delegate: ImageViewSectionControllerDelegate?
-
+    
+    var itemSize: CGSize = CGSize.zero
+    
+    override init() {
+        super.init()
+        minimumLineSpacing = 2
+        minimumInteritemSpacing = 2
+    }
+    
+    convenience init(itemSize: CGSize) {
+        self.init()
+        self.itemSize = itemSize
+    }
+    
     override func sizeForItem(at index: Int) -> CGSize {
-        return CGSize(width: 50, height: 50)
+        return self.itemSize
     }
 
     override func cellForItem(at index: Int) -> UICollectionViewCell {
@@ -100,10 +183,7 @@ final class ImageViewSectionController: ListSectionController {
                                                                     fatalError()
         }
         
-//        cell.imageView.kf.setImage(with: object!.imageURL)
-        cell.imageView.kf.setImage(with: object!.imageURL, placeholder: nil, options: nil, progressBlock: nil) { (reuslt) in
-            cell.imageView.contentMode = .scaleAspectFit
-        }
+        cell.imageView.kf.setImage(with: object!.imageURL)
         return cell
     }
 
@@ -114,6 +194,25 @@ final class ImageViewSectionController: ListSectionController {
     override func didSelectItem(at index: Int) {
         delegate?.didSelectItem(self.object)
     }
+    
+    
+    // ListWorkingRangeDelegate
+    func listAdapter(_ listAdapter: ListAdapter, sectionControllerWillEnterWorkingRange sectionController: ListSectionController) {
+        if let cell = self.collectionContext?.cellForItem(at: 1, sectionController: self) as? ImageCollectionViewCell {
+            cell.imageView.kf.setImage(with: object!.imageURL)
+        } else {
+            fatalError()
+        }
+    }
+    
+    func listAdapter(_ listAdapter: ListAdapter, sectionControllerDidExitWorkingRange sectionController: ListSectionController) {
+        
+    }
+    
+
 
 }
+
+
+
 

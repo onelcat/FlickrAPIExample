@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 final class InfoViewController: UIViewController {
 
@@ -22,7 +23,7 @@ final class InfoViewController: UIViewController {
     
     @IBOutlet weak var dateLabel: UILabel!
     
-    @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var descriptionView: WKWebView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,9 +35,22 @@ final class InfoViewController: UIViewController {
         self.imageView.kf.setImage(with: value.imageURL)
         self.nameLabel.text = "作者: " + value.ownername
         self.dateLabel.text = "日期: " + value.dateupload
-        self.descriptionTextView.text = value.description
+
+        self.descriptionView.navigationDelegate = self
+        self.descriptionView.loadHTMLString(value.description ?? "", baseURL: nil)
+        
+
     
         // Do any additional setup after loading the view.
     }
     
+}
+
+extension InfoViewController: WKUIDelegate,WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        let jsStr = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '160%'"
+        self.descriptionView.evaluateJavaScript(jsStr) { (evaluation, erro) in
+            
+        }
+    }
 }
