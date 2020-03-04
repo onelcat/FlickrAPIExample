@@ -22,7 +22,7 @@ class MainViewController: UIViewController {
     private var itemLength: CGFloat = 0
     
     private var loading: Bool = false
-    private var page = 1
+    
 //    private var isMore: Bool = true
     
     private var dataSource: PhotosModel?
@@ -194,7 +194,7 @@ extension MainViewController: UIScrollViewDelegate {
             
             loading = true
             
-            API.shared.interestingnessGetList(date: Date(), page: page, per_page: dataSource.perpage) { (result) in
+            API.shared.interestingnessGetList(date: Date(), page: dataSource.page + 1, per_page: dataSource.perpage) { (result) in
                 
                 switch result {
                 case let .failure(error):
@@ -208,7 +208,6 @@ extension MainViewController: UIScrollViewDelegate {
                         self.dataSource?.photo = dataSource.photo + value.photo
                         debuglog("获取的数据",value.perpage,dataSource.photo.count,value.photo.count)
                         let count = dataSource.photo.count + value.photo.count
-                        if value.total == 
                         if count > value.total {
                             self.dataSource?.photo.removeLast(count - value.total)
                         }
