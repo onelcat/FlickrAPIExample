@@ -45,8 +45,6 @@ class MainViewController: UIViewController {
         let pageCount = columnCount * hCount
         self.itemLength = itemLength
         
-//        let pixWidth = itemLength * UIScreen.main.scale
-//        debuglog("pixWidth",pixWidth)
         API.shared.interestingnessGetList(per_page: Int(pageCount)) { [weak self] (result) in
             switch result {
             case let .failure(error):
@@ -205,7 +203,6 @@ extension MainViewController: UIScrollViewDelegate {
         }
         
         if dataSource.total <= dataSource.photo.count {
-            debuglog("已经加载完成", dataSource.total,dataSource.photo.count)
             return
         }
         
@@ -221,20 +218,20 @@ extension MainViewController: UIScrollViewDelegate {
                 case let .failure(error):
                     fatalError(error.localizedDescription)
                 case let .success(value):
-//                    DispatchQueue.main.async {
-                        
-                        self.loading = false
-                        self.dataSource?.page = value.page
-                        self.dataSource?.total = value.total
-                        self.dataSource?.photo = dataSource.photo + value.photo
-                        debuglog("获取的数据",value.perpage,dataSource.photo.count,value.photo.count)
-                        let count = dataSource.photo.count + value.photo.count
-                        if count > value.total {
-                            self.dataSource?.photo.removeLast(count - value.total)
-                        }
 
-                        self.collectionView.reloadData()
-//                    }
+                        
+                    self.loading = false
+                    self.dataSource?.page = value.page
+                    self.dataSource?.total = value.total
+                    self.dataSource?.photo = dataSource.photo + value.photo
+                    
+                    let count = dataSource.photo.count + value.photo.count
+                    if count > value.total {
+                        self.dataSource?.photo.removeLast(count - value.total)
+                    }
+
+                    self.collectionView.reloadData()
+
                     
                 } // switch
             
