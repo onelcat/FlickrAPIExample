@@ -145,20 +145,20 @@ extension MainViewController: UICollectionViewDelegate {
             fatalError()
         }
         
-        let imageView = cell.imageView
-        let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
-        imageView?.kf.setImage(
-              with: url,
-              placeholder: nil,
-              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
-              progressBlock: { receivedSize, totalSize in
-//                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
-              },
-              completionHandler: { result in
-//                  print(result)
-//                  print("\(indexPath.row + 1): Finished")
-              }
-          )
+//        let imageView = cell.imageView
+//        let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+//        imageView?.kf.setImage(
+//              with: url,
+//              placeholder: nil,
+//              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
+//              progressBlock: { receivedSize, totalSize in
+////                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
+//              },
+//              completionHandler: { result in
+////                  print(result)
+////                  print("\(indexPath.row + 1): Finished")
+//              }
+//          )
         
         
     }
@@ -180,7 +180,7 @@ extension MainViewController: UICollectionViewDelegate {
         let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
 //        let imageView = cell.imageView
 //        imageView?.kf.cancelDownloadTask()
-        ImageDownloader.shared.remove(url: url)
+//        ImageDownloader.shared.remove(url: url)
     }
 
     
