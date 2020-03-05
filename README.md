@@ -49,3 +49,9 @@ $ carthage update Kingfisher --platform iOS
 2. FlickrDemo: 只用到`ObjectMapper`裤。会在主界面出现图片渲染混乱的错误。网络请求，图片下载管理自己实现。
 
 3. FlickrDemo1: 会用到`Alamofire`,`Kingfisher`,`Kingfisher`,`ObjectMapper`裤。
+
+
+## 开发中遇到的问题
+
+1. 开发过程中会出现前一天的日期无效的问题。
+2. 自己定义图片框架，在使用中渲染cell的时候出现图片cell复用混乱的问题。
