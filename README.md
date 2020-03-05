@@ -8,7 +8,7 @@
 
 1. 如果是从github clone项目。
 
-```
+```sh
 $ git clone https://github.com/onelcat/FlickrAPIExample.git
 $ cd  FlickrAPIExample
 $ carthage update Kingfisher --platform iOS
