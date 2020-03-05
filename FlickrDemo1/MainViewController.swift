@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Kingfisher
 
 class MainViewController: UIViewController {
 
@@ -23,6 +23,8 @@ class MainViewController: UIViewController {
     private var itemLength: CGFloat = 0
     
     private var loading: Bool = false
+    
+//    private var isMore: Bool = true
     
     private var dataSource: PhotosModel?
     
@@ -103,6 +105,16 @@ extension MainViewController: UICollectionViewDataSource {
                 imageView?.image = image
             }
         }
+//        cell.imageView.kf.indicatorType = .activity
+//        imageView?.kf.setImage(
+//              with: url,
+//              placeholder: nil,
+//              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
+//              progressBlock: { receivedSize, totalSize in
+//              },
+//              completionHandler: { result in
+//              }
+//          )
         return cell
         
     }
@@ -112,7 +124,14 @@ extension MainViewController: UICollectionViewDataSource {
 
 extension MainViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-
+//        guard let photos = self.dataSource?.photo else {
+//            fatalError()
+//        }
+//        let urls = indexPaths.compactMap { (index) -> URL in
+//            let url = photos[index.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+//            return url
+//        }
+//        ImagePrefetcher(urls: urls).start()
     }
 }
 
@@ -137,6 +156,18 @@ extension MainViewController: UICollectionViewDelegate {
             }
         }
 
+//        imageView?.kf.setImage(
+//              with: url,
+//              placeholder: nil,
+//              options: [.transition(.fade(1)), .loadDiskFileSynchronously],
+//              progressBlock: { receivedSize, totalSize in
+////                  print("\(indexPath.row + 1): \(receivedSize)/\(totalSize)")
+//              },
+//              completionHandler: { result in
+////                  print(result)
+////                  print("\(indexPath.row + 1): Finished")
+//              }
+//          )
         
         
     }
@@ -156,6 +187,8 @@ extension MainViewController: UICollectionViewDelegate {
             fatalError()
         }
         let url = photos[indexPath.item].getImageURL(size: CGSize(width: self.itemLength, height: self.itemLength))
+//        let imageView = cell.imageView
+//        imageView?.kf.cancelDownloadTask()
         cell.imageView.image = nil
         ImageDownloader.shared.remove(url: url)
     }
