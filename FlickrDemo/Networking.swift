@@ -6,7 +6,6 @@
 //  Copyright © 2020 haoshuai. All rights reserved.
 //
 
-import Alamofire
 import ObjectMapper
 import UIKit
 
@@ -21,28 +20,28 @@ struct API {
     init() { }
     
     func getPhotoInfo(photo: PhotoModel) {
-        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=475486054f5b1afa16fefe55415fa546&photo_id=\(photo.id)&secret=\(photo.secret)&format=json&nojsoncallback=1"
-        AF.request(url).responseString { (resultData) in
-            switch resultData.result {
-            case let .success(value):
-                debuglog("请求成功",value)
-            case let .failure(error):
-                debuglog("请求失败",error.localizedDescription)
-            }
-        }
+        let _ = "https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=475486054f5b1afa16fefe55415fa546&photo_id=\(photo.id)&secret=\(photo.secret)&format=json&nojsoncallback=1"
+//        AF.request(url).responseString { (resultData) in
+//            switch resultData.result {
+//            case let .success(value):
+//                debuglog("请求成功",value)
+//            case let .failure(error):
+//                debuglog("请求失败",error.localizedDescription)
+//            }
+//        }
     }
     
     func getPhotoSize(photo: PhotoModel) {
-        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=475486054f5b1afa16fefe55415fa546&photo_id=\(photo.id)&format=json&nojsoncallback=1"
+        let _ = "https://www.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=475486054f5b1afa16fefe55415fa546&photo_id=\(photo.id)&format=json&nojsoncallback=1"
         
-        AF.request(url).responseString { (resultData) in
-            switch resultData.result {
-            case let .success(value):
-                debuglog("请求成功",value)
-            case let .failure(error):
-                debuglog("请求失败",error.localizedDescription)
-            }
-        }
+//        AF.request(url).responseString { (resultData) in
+//            switch resultData.result {
+//            case let .success(value):
+//                debuglog("请求成功",value)
+//            case let .failure(error):
+//                debuglog("请求失败",error.localizedDescription)
+//            }
+//        }
         
     }
     
@@ -148,12 +147,4 @@ struct API {
     }
     
     
-//    func request(_ url: String) {
-//        URLSession.shared.dataTask(with: URL.init(string: url)!) { (data, _, error) in
-//            guard let value = data else {
-//                fatalError()
-//            }
-//            let jsonStr = String(data: value, encoding: String.Encoding.utf8)
-//        }
-//    }
 }

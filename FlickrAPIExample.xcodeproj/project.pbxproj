@@ -64,6 +64,7 @@
 		2ED0BB74241095A30025324C /* Date_Extesion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F638A240E79A500DA1F2C /* Date_Extesion.swift */; };
 		2ED0BB75241095A40025324C /* Date_Extesion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F638A240E79A500DA1F2C /* Date_Extesion.swift */; };
 		2ED0BB76241096290025324C /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E726BB9240F750600E3A835 /* DataSource.swift */; };
+		2ED0BB77241096840025324C /* ImageViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E726BB5240F73E700E3A835 /* ImageViewCollectionViewCell.swift */; };
 		2EF7CF20240E8A9A00B13BD4 /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EF7CF1F240E8A9A00B13BD4 /* DataSourceModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -828,6 +829,7 @@
 				2ED0BB74241095A30025324C /* Date_Extesion.swift in Sources */,
 				2ED0BB39241093710025324C /* MainViewController.swift in Sources */,
 				2ED0BB64241093F40025324C /* InfoViewController.swift in Sources */,
+				2ED0BB77241096840025324C /* ImageViewCollectionViewCell.swift in Sources */,
 				2ED0BB732410959B0025324C /* HSLog.swift in Sources */,
 				2ED0BB35241093710025324C /* AppDelegate.swift in Sources */,
 				2ED0BB76241096290025324C /* DataSource.swift in Sources */,
