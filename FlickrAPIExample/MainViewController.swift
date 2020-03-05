@@ -115,6 +115,13 @@ extension MainViewController: UIScrollViewDelegate {
                         self.dataSource?.page = value.page
                         self.dataSource?.total = value.total
                         self.dataSource?.photo = dataSource.photo + value.photo
+                        
+                        
+                        let count = dataSource.photo.count + value.photo.count
+                        if count > value.total {
+                            self.dataSource?.photo.removeLast(count - value.total)
+                        }
+                        
                         self.adapter.performUpdates(animated: true, completion: nil)
                     }
                     

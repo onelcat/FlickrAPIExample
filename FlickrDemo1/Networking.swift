@@ -55,14 +55,46 @@ struct API {
         let url = root_url + "&date=\(yesterdays.dateFormat(formatter: "yyyy-MM-dd"))" + "&page=\(page)&per_page=\(per_page)" + "&extras=description,date_upload,owner_name"
                 
         AF.request(url).responseString { (resultData) in
-
+            
             switch resultData.result {
             case let .success(value):
-
+                
                 if let result = Mapper<ResultModel>().map(JSONString: value) {
                     if result.code == 0,let photos = result.photos  {
                         completionHandler(.success(photos))
-                    } else {
+                    }
+                    else if result.code == 1 {
+                        // 有一个日期错误的问题
+                        let url = self.root_url + "" + "&page=\(page)&per_page=\(per_page)" + "&extras=description,date_upload,owner_name"
+                        
+                        AF.request(url).responseString { (resultData) in
+                            switch resultData.result {
+                            case let .success(value):
+                                
+                                if let result = Mapper<ResultModel>().map(JSONString: value) {
+                                    
+                                    if result.code == 0,let photos = result.photos  {
+                                        completionHandler(.success(photos))
+                                    }
+                                    else {
+                                        let error = NSError(domain: result.message, code: result.code, userInfo: nil)
+                                        completionHandler(.failure(error))
+                                    }
+                                    
+                                } else {
+                                    
+                                    let error = NSError(domain: "io.onelcat.github mapper is null", code: 100036, userInfo: nil)
+                                    completionHandler(.failure(error))
+                                    
+                                }
+                                
+                            case let .failure(error):
+                                debuglog("请求失败",error.errorDescription ?? "一个未知错误")
+                            } // switch resultData.result
+                        }//responseString
+                        
+                    }
+                    else {
                         let error = NSError(domain: result.message, code: result.code, userInfo: nil)
                         completionHandler(.failure(error))
                     }
@@ -70,12 +102,13 @@ struct API {
                     let error = NSError(domain: "io.onelcat.github mapper is null", code: 100036, userInfo: nil)
                     completionHandler(.failure(error))
                 }
-
+                
             case let .failure(error):
                 debuglog("请求失败",error.errorDescription ?? "一个未知错误")
             } // switch resultData.result
-
+            
         } // AF.request(url).responseString
+
         
     }// func
     
