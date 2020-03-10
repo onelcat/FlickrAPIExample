@@ -11,7 +11,7 @@
 ```sh
 $ git clone https://github.com/onelcat/FlickrAPIExample.git
 $ cd  FlickrAPIExample
-$ carthage update Kingfisher --platform iOS
+$ carthage update --platform iOS
 ```
 
 2. 配置你自己的开发者账号。
